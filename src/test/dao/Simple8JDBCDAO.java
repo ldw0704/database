@@ -1,4 +1,4 @@
-package dao;
+package test.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-public class Simple7JDBCDAO {
+public class Simple8JDBCDAO {
 
 	public static void main(String[] args) {
 		String paramVarchar = "varcharTestUpdate";
@@ -17,7 +17,7 @@ public class Simple7JDBCDAO {
 		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=utf-8&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "smart"; 
-		String sql = "UPDATE exam SET varcharTest = ? WHERE 1"; //1은모두(true),업데이트
+		String sql = "DELETE FROM exam WHERE varcharTest = ?"; //varcharTest 컬럼값이 vacharTestUpdate인 row 삭제.
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -36,9 +36,9 @@ public class Simple7JDBCDAO {
 			// sql문 실행(select문 만 executeQuery()사용,나머지는 exectueUpdate()-int return)
 			int res = stmt.executeUpdate();  // 수정개수가 됨
 			if (res > 0) {
-				System.out.println(res + "개 행이 수정되었습니다.");
+				System.out.println(res + "개 행이 삭제되었습니다.");
 			} else {
-				System.out.println("수정실패했습니다.");
+				System.out.println("삭제실패했습니다.");
 			}
 			// 5.select문 만 resultSet 객체를 반환한다.
 			// 나머진 int를 반환한다.

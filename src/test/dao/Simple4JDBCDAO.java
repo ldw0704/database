@@ -1,4 +1,4 @@
-package dao;
+package test.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,13 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Simple3JDBCDAO3 {
+public class Simple4JDBCDAO {
 
 	public static void main(String[] args) {
+		double param = 100;
 		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=utf-8&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "smart"; // 정보가 틀리면 에러뜸.\
-		String sql = "SELECT * FROM exam";
+		String sql = "SELECT * FROM exam WHERE intTest = " + param;
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;

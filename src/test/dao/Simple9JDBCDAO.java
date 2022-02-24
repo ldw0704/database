@@ -1,4 +1,4 @@
-package dao;
+package test.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 
-public class Simple8JDBCDAO {
+public class Simple9JDBCDAO {
 
 	public static void main(String[] args) {
 		String paramVarchar = "varcharTestUpdate";
@@ -17,7 +17,8 @@ public class Simple8JDBCDAO {
 		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=utf-8&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "smart"; 
-		String sql = "DELETE FROM exam WHERE varcharTest = ?"; //varcharTest 컬럼값이 vacharTestUpdate인 row 삭제.
+		StringBuffer sql = new StringBuffer() //쿼리문이 길기때문에
+				.append("DELETE FROM exam WHERE varcharTest = ?");
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -28,7 +29,7 @@ public class Simple8JDBCDAO {
 			// 2.db연결(DriverManager.getConnection())
 			conn = DriverManager.getConnection(url, user, password);
 			// 3.sql문 작성(Statement, PreparedStatement).
-			stmt = conn.prepareStatement(sql); //만든 sql을 쓸때.
+			stmt = conn.prepareStatement(sql.toString()); //스트링버퍼를 스트링으로 바꿔줘야한다.
 
 			stmt.setString(1, paramVarchar);
 			
