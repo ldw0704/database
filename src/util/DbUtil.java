@@ -23,7 +23,7 @@ public class DbUtil {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return conn;
 	}
 	//db해제[닫기]
 	public static void dbclose(Connection conn, Statement stmt, ResultSet rs) {
