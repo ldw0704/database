@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import Domain.ExamVO;
 import dao.ExamDAO;
+import domain.ExamVO;
 
 public class Test {
 

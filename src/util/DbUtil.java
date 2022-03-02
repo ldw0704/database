@@ -7,27 +7,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DbUtil {
-	
-	//db연결
-	public Connection dbConn() {
-		String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
-		String user = "root";
-		String password = "smart";
-		Connection conn = null;
-		
+	String url = "jdbc:mysql://localhost:3306/smart?characterEncoding=UTF-8&serverTimezone=Asia/Seoul";
+	String user = "root";
+	String password = "smart";
+	Connection conn = null;
+
+	/**
+	 * db연결
+	 * 
+	 * @return
+	 */
+	public Connection getConn() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(url, user, password);
 		} catch (Exception e) {
-			
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return conn;
 	}
-	//db해제[닫기]
-	public static void dbclose(Connection conn, Statement stmt, ResultSet rs) {
-		//preparedstatement 상위인 statement를 닫아준다.
+
+	public void dbclose(Connection conn, Statement stmt, ResultSet rs) {
 		try {
 			if (rs != null)
 				rs.close();
