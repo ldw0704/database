@@ -10,190 +10,179 @@ import java.util.List;
 import domain.SampleVO;
 import util.DbUtil;
 
-public class SampleDAO extends DbUtil{
+public class SampleDAO extends DbUtil {
 
 	public void create(SampleVO vo) {
-		// 코드작성
-		
-		StringBuffer sql = new StringBuffer();
-				sql.append("\n INSERT INTO sample ");
-				sql.append("\n (strData, sampleDate) ");
-				sql.append("\n VALUES (?, ?) ");
-		
+
+		StringBuffer sql = new StringBuffer()
+							.append(" INSERT INTO sample ")
+							.append(" (num, strData, sampleDate) ")
+							.append(" VALUES(null, ?, curdate())");
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		int idx = 1;
-		
+
 		try {
+
 			conn = getConn();
-//			conn =  new DbUtil().getConn();
-			// preparedStatement(sql작성 실행)
 			stmt = conn.prepareStatement(sql.toString());
-			
-			//?에 값설정
-			stmt.setString(idx++, vo.getStrData());			
-			stmt.setDate(idx++, new Date(vo.getSampleDate().getTime()));
-			
-			
+
+			stmt.setString(idx++, vo.getStrData());
+
 			stmt.executeUpdate();
-			// 결과처리(Select문만 resutlSet객체 리턴
-			// 닫기
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			dbclose(conn, stmt, null);
-
+			dbClose(conn, stmt, null);
 		}
 
 	}
 
-	/**
-	 * R:read() : 조회 접근지정자 : public param : 조회할값 return : List
-	 */
-	public List read() {
-		// 코드작성
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT * FROM sample ");
+	public List<SampleVO> read() {
+
+		StringBuffer sql = new StringBuffer().append(" SELECT * FROM sample ");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		List<SampleVO> list = new ArrayList<SampleVO>();
-
+		
 		try {
-			// 드라이버로드
+
 			conn = getConn();
-			// preparedStatement(sql작성 실행)
 			stmt = conn.prepareStatement(sql.toString());
-			// 결과처리(Select문만 resutlSet객체 리턴)
+
 			rs = stmt.executeQuery();
-			while(rs.next()) { // next()는 해당열을 가져올수 잇는가 boolean return
-				list.add(
-						new SampleVO(
-								rs.getInt("num"), 
-								rs.getString("strData"), 
-								rs.getDate("sampleDate")
-								)
-						);		
-				}
+
+			while (rs.next()) {
+				list.add(new SampleVO(rs.getInt("num"),
+									rs.getString("strData"),
+									rs.getDate("sampleDate")));
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			// 닫기
-			dbclose(conn, stmt, rs);
+			dbClose(conn, stmt, rs);
 		}
-
 		return list;
 	}
 
-	public SampleVO read(SampleVO vo){
-		//코드작성
+	public SampleVO read(SampleVO vo2) {
+
+		StringBuffer sql = new StringBuffer()
+							.append(" SELECT * FROM sample ")
+							.append(" WHERE num= ? ");
+//							.append(" WHERE strData= ? ");
 		
-		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT * FROM sample WHERE num = ? ");
+//		sql.append(" WHERE 1=1 ");
+//		if(vo2.getNum() > 0) {
+//			sql.append(" AND num = ? ");
+//		}
+//		if(!"".equals(vo2.getStrData())) {
+//			sql.append(" AND strData = ? ");
+//		}
+//		if(!"".equals(vo2.getSampleDate())) {
+//			sql.append(" AND sampleDate = ? ");
+//		}
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		SampleVO SampleVO = null;
+//		List<SampleVO> list = new ArrayList<SampleVO>();
+		SampleVO vo = null;
+		int idx = 1;
 		
 		try {
-			//드라이버 로드
+
 			conn = getConn();
-			//preparedStatement(sql + 실행)
 			stmt = conn.prepareStatement(sql.toString());
+			stmt.setInt(idx++, vo2.getNum());
+//			stmt.setString(idx++, vo2.getStrData());
 			
-			stmt.setInt(1, vo.getNum());
-			
-			//select는 ResultSet 객체생성
-			rs = stmt.executeQuery();			
-			if(rs.next()) {
-				SampleVO = new SampleVO( 
-						rs.getInt("num"), 
-						rs.getString("strData"), 
-						rs.getDate("sampleDate")						
-				);
+//			if(vo2.getNum() > 0) {
+//				stmt.setInt(idx++, vo2.getNum());
+//			}
+//			if(!"".equals(vo2.getStrData())) {
+//				stmt.setString(idx++, vo2.getStrData());
+//			}
+//			if(!"".equals(vo2.getSampleDate())) {
+//				stmt.setDate(idx++, (Date)vo2.getSampleDate());
+//			}
+//			stmt.setInt(1, vo2.getNum());
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				 vo = new SampleVO(rs.getInt("num"),
+									rs.getString("strData"),
+									rs.getDate("sampleDate"));
 			}
-		} catch (Exception e) {			
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			//닫기
-			dbclose(conn, stmt, rs);		
+			dbClose(conn, stmt, rs);
 		}
-		//코드작성 끝
-		return SampleVO;
+		return vo;
 	}
-	
-	/**
-	 * U:update() :수정 접근지정자 : public param : 수정할값 return : 없음
-	 */
+
 	public void update(SampleVO vo) {
-		// 코드작성
-		
-		StringBuffer sql = new StringBuffer();
-		sql.append(" UPDATE sample ");
-		sql.append(" SET strData = ?, sampleDate = ? "); 
-		sql.append(" WHERE num = ? ");
-		
+
+		StringBuffer sql = new StringBuffer()
+							.append(" UPDATE sample ")
+							.append(" SET strData= ?, sampleDate = curdate() ")
+							.append(" WHERE num= ? ");
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		int idx = 0;
+		int idx = 1;
 		try {
-			// 드라이버로드
+
 			conn = getConn();
 			stmt = conn.prepareStatement(sql.toString());
-			
-			stmt.setString(++idx, vo.getStrData());
-			stmt.setDate(++idx, new Date(vo.getSampleDate().getTime()));
-			stmt.setInt(++idx, vo.getNum());
-			
-			// preparedStatement(sql작성 실행)
-			int res = stmt.executeUpdate();
-			// 결과처리(Select문만 resutlSet객체 리턴
-		} catch (Exception e) {
 
+			stmt.setString(idx++, vo.getStrData());
+			stmt.setInt(idx++, vo.getNum());
+			stmt.setDate(idx++, (Date)vo.getSampleDate());
+			
+			stmt.executeUpdate();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			// 닫기
-			dbclose(conn, stmt, null);
+			dbClose(conn, stmt, null);
 		}
-		
 	}
 
-	/**
-	 * D:delete() :삭제 접근지정자 : public param : 삭제할값 return : 없음
-	 */
 	public void delete(SampleVO vo) {
-//		System.out.println(vo);
-		// 코드작성
-		 
-		 StringBuffer sql =  new StringBuffer();
-		 	sql.append(" DELETE FROM sample ");
-		 	sql.append(" WHERE num = ? ");
-		 
-		 Connection conn = null;
-		 PreparedStatement stmt = null;
-		 
+		StringBuffer sql = new StringBuffer()
+							.append(" DELETE FROM sample ")
+							.append(" WHERE num= ? ");
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		int idx = 1;
 		try {
-			// 드라이버로드
+
 			conn = getConn();
 			stmt = conn.prepareStatement(sql.toString());
-			
-			stmt.setInt(1, vo.getNum());
-			
-			// preparedStatement(sql작성 실행)
-			int res = stmt.executeUpdate();
-			// 결과처리(Select문만 resutlSet객체 리턴
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			// 닫기
-			dbclose(conn, stmt, null);	
-		}
-			
-	}
 
+			stmt.setInt(idx++, vo.getNum());
+
+			stmt.executeUpdate();
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			dbClose(conn, stmt, null);
+		}
+
+	}
 }

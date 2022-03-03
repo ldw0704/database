@@ -46,7 +46,7 @@ public class ExamDAO extends DbUtil{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			dbclose(conn, stmt, null);
+			dbClose(conn, stmt, null);
 
 		}
 
@@ -90,7 +90,7 @@ public class ExamDAO extends DbUtil{
 			e.printStackTrace();
 		} finally {
 			// 닫기
-			dbclose(conn, stmt, rs);
+			dbClose(conn, stmt, rs);
 		}
 
 		return list;
@@ -131,7 +131,7 @@ public class ExamDAO extends DbUtil{
 			e.printStackTrace();
 		} finally {
 			//닫기
-			dbclose(conn, stmt, rs);		
+			dbClose(conn, stmt, rs);		
 		}
 		//코드작성 끝
 		return examVo;
@@ -168,7 +168,7 @@ public class ExamDAO extends DbUtil{
 			e.printStackTrace();
 		} finally {
 			// 닫기
-			dbclose(conn, stmt, null);
+			dbClose(conn, stmt, null);
 		}
 		
 	}
@@ -201,7 +201,7 @@ public class ExamDAO extends DbUtil{
 			e.printStackTrace();
 		}finally {
 			// 닫기
-			dbclose(conn, stmt, null);	
+			dbClose(conn, stmt, null);	
 		}
 			
 	}

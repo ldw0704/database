@@ -28,7 +28,7 @@ public class DbUtil {
 		return conn;
 	}
 
-	public void dbclose(Connection conn, Statement stmt, ResultSet rs) {
+	public void dbClose(Connection conn, Statement stmt, ResultSet rs) {
 		try {
 			if (rs != null)
 				rs.close();
